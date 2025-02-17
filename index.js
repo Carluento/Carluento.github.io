@@ -18,13 +18,7 @@ const quizData = [
     const question = quizData[currentQuestion];
     questionElement.innerText = question.question;
   
-    optionsElement.innerHTML = "";
-    question.options.forEach(option => {
-      const button = document.createElement("button");
-      button.innerText = option;
-      optionsElement.appendChild(button);
-      button.addEventListener("click", selectAnswer);
-    });
+   
   }
   
   function selectAnswer(e) {
