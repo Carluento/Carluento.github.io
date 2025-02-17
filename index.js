@@ -1,3 +1,15 @@
+//grabbing JSON contents
+
+fetch('cars.json')
+.then(response => response.json())
+.then(data => {
+    // data is now a JavaScript object (or array)
+    // Proceed to work with the data
+    console.log(data);
+})
+.catch(error => console.error('Error fetching JSON:', error));
+
+
 const quizData = [
     {
       question: "What is the make and model of today's car?",
