@@ -39,6 +39,21 @@
             font-size: 16px;
             width: 200px;
         }
+        .submit-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -65,6 +80,10 @@
             <option value="">--Select Model--</option>
         </select>
     </div>
+
+    <button class="submit-btn" onclick="checkAnswer()">Submit</button>
+
+    <div id="feedback" class="feedback"></div>
 </div>
 
 <script>
@@ -88,6 +107,17 @@
         { make: "Maserati", models: ["GranTurismo", "MC12", "Quattroporte", "Ghibli", "Levante"] },
         { make: "Honda", models: ["NSX", "Civic Type R", "S2000", "CRX", "Prelude"] }
     ];
+
+    // Randomly select the correct car make and model for today
+    let correctMake;
+    let correctModel;
+
+    function getRandomCar() {
+        const randomIndex = Math.floor(Math.random() * carData.length);
+        const selectedCar = carData[randomIndex];
+        correctMake = selectedCar.make;
+        correctModel = selectedCar.models[Math.floor(Math.random() * selectedCar.models.length)];
+    }
 
     // Populate the "make" dropdown
     const makeDropdown = document.getElementById("makeDropdown");
@@ -127,9 +157,28 @@
         document.getElementById('current-date').innerText = dateStr;
     }
 
-    // Initialize the page with the current date
+    // Check the user's answer and provide feedback
+    function checkAnswer() {
+        const selectedMake = makeDropdown.value;
+        const selectedModel = modelDropdown.value;
+        const feedbackElement = document.getElementById("feedback");
+
+        if (!selectedMake || !selectedModel) {
+            feedbackElement.innerHTML = "Please select both a make and a model!";
+            return;
+        }
+
+        if (selectedMake === correctMake && selectedModel === correctModel) {
+            feedbackElement.innerHTML = `<span style="color: green;">Correct! Today's car is a ${correctMake} ${correctModel}.</span>`;
+        } else {
+            feedbackElement.innerHTML = `<span style="color: red;">Incorrect! Try again.</span>`;
+        }
+    }
+
+    // Initialize the page with the current date and a random car for the day
     window.onload = function() {
         updateDate();
+        getRandomCar(); // Randomly select the car for today
     };
 </script>
 
