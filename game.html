@@ -1,77 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Cardle</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardle - Car Trivia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            max-width: 500px;
+            margin: 40px auto;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .dropdown {
+            margin-bottom: 20px;
+        }
+        .dropdown select {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+        }
+    </style>
 </head>
 <body>
-  <div id="quiz">
-    <h1>Cardle</h1>
-    <div id="question"></div>
-    <ul class="hList">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <h1>Choose Your Car</h1>
 
-  <!-- Dropdown for Car Make -->
-  <label for="makeDropdown">Select Car Make:</label>
-  <select id="makeDropdown">
-    <option value="">--Select Make--</option>
-  </select>
+<header>
+    <h1>Cardle - Car Trivia</h1>
+</header>
 
-  <!-- Dropdown for Car Model -->
-  <label for="modelDropdown">Select Car Model:</label>
-  <select id="modelDropdown">
-    <option value="">--Select Model--</option>
-  </select>
+<div class="content">
+    <p class="date">Date: <span id="current-date"></span></p>
 
-  <script src="script.js"></script>
-</body>
-</html>
+    <p class="question">What is the make and model of today's car?</p>
 
+    <div class="dropdown">
+        <label for="make">Choose the make of the car:</label>
+        <select id="make" onchange="updateModels()">
+            <option value="">Select Make</option>
+        </select>
+    </div>
 
-  <script>
-    // JavaScript array of car makes and models
-    const carData = [
-      { make: "Toyota", models: ["Corolla", "Camry", "Prius", "Highlander"] },
-      { make: "Ford", models: ["Focus", "Mustang", "Fiesta", "Explorer"] },
-      { make: "Chevrolet", models: ["Malibu", "Camaro", "Cruze", "Tahoe"] },
-      { make: "Honda", models: ["Civic", "Accord", "Pilot", "CR-V"] }
-    ];
-
-    // Populate the make dropdown menu dynamically
-    function populateMakes() {
-      const makeDropdown = document.getElementById('make');
-      carData.forEach(car => {
-        const option = document.createElement('option');
-        option.value = car.make.toLowerCase();
-        option.textContent = car.make;
-        makeDropdown.appendChild(option);
-      });
-    }
-
-    // Update the model dropdown when a make is selected
-    function updateModels() {
-      const make = document.getElementById('make').value;
-      const modelDropdown = document.getElementById('model');
-      
-      // Clear existing model options
-      modelDropdown.innerHTML = '<option value="">--Select Model--</option>';
-      
-      if (make) {
-        // Find the selected make and populate the models
-        const selectedCar = carData.find(car => car.make.toLowerCase() === make);
-        selectedCar.models.forEach(model => {
-          const option = document.createElement('option');
-          option.value = model.toLowerCase();
-          option.textContent = model;
-          modelDropdown.appendChild(option);
-        });
-      }
-    }
-
-    // Call populateMakes to initialize the make dropdown
-    populateMakes();
-  </script>
-</body>
-</html>
+    <div class="dropdown">
+        <label for="model">Choose the model of the car:</label>
+        <select id="model">
+            <option value="">Select Model</option>
+        </select>
+    </div>
+</div>
