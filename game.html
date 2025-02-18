@@ -11,54 +11,53 @@
     <ul class="hList">
     <!DOCTYPE html>
 <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Car Make and Model Dropdown</title>
-  <style>
-    label {
-      font-weight: bold;
-      margin-top: 10px;
-    }
-    select {
-      margin: 5px 0 20px;
-      padding: 5px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
   <h1>Select Car Make and Model</h1>
 
-<!-- Dropdown Container -->
-<div class="dropdown-container">
-  <!-- Dropdown for Make -->
-  <label for="make">Select Make:</label>
-  <select id="make" onchange="updateModels()">
-    <option value="">--Select Make--</option>
-    <option value="toyota">Toyota</option>
-    <option value="ford">Ford</option>
-    <option value="chevrolet">Chevrolet</option>
-    <option value="honda">Honda</option>
-  </select>
+  <!-- Dropdown Container -->
+  <div class="dropdown-container">
+    <!-- Dropdown for Make -->
+    <label for="make">Select Make:</label>
+    <select id="make" onchange="updateModels()">
+      <option value="">--Select Make--</option>
+    </select>
 
-  <!-- Dropdown for Model -->
-  <label for="model">Select Model:</label>
-  <select id="model">
-    <option value="">--Select Model--</option>
-  </select>
-</div>
+    <!-- Dropdown for Model -->
+    <label for="model">Select Model:</label>
+    <select id="model">
+      <option value="">--Select Model--</option>
+    </select>
+  </div>
 
   <script>
-    // JavaScript arrays for makes and models
-    const carData = {
-      toyota: ['Corolla', 'Camry', 'Prius', 'Highlander'],
-      ford: ['Focus', 'Mustang', 'Fiesta', 'Explorer'],
-      chevrolet: ['Malibu', 'Camaro', 'Cruze', 'Tahoe'],
-      honda: ['Civic', 'Accord', 'Pilot', 'CR-V']
-    };
+    // JavaScript array of car makes and models
+    const carData = [
+      { make: "Toyota", models: ["Corolla", "Camry", "Prius", "Highlander"] },
+      { make: "Ford", models: ["Focus", "Mustang", "Fiesta", "Explorer"] },
+      { make: "Chevrolet", models: ["Malibu", "Camaro", "Cruze", "Tahoe"] },
+      { make: "Honda", models: ["Civic", "Accord", "Pilot", "CR-V"] }
+    ];
 
-    // Function to update the models based on the selected make
+    // Populate the make dropdown menu dynamically
+    function populateMakes() {
+      const makeDropdown = document.getElementById('make');
+      carData.forEach(car => {
+        const option = document.createElement('option');
+        option.value = car.make.toLowerCase();
+        option.textContent = car.make;
+        makeDropdown.appendChild(option);
+      });
+    }
+
+    // Update the model dropdown when a make is selected
     function updateModels() {
       const make = document.getElementById('make').value;
       const modelDropdown = document.getElementById('model');
@@ -67,9 +66,9 @@
       modelDropdown.innerHTML = '<option value="">--Select Model--</option>';
       
       if (make) {
-        // Populate the model dropdown based on the selected make
-        const models = carData[make];
-        models.forEach(model => {
+        // Find the selected make and populate the models
+        const selectedCar = carData.find(car => car.make.toLowerCase() === make);
+        selectedCar.models.forEach(model => {
           const option = document.createElement('option');
           option.value = model.toLowerCase();
           option.textContent = model;
@@ -77,10 +76,9 @@
         });
       }
     }
-    
-    <button id="submit">Submit</button>
-  </div>
 
-  <script src="index.js"></script>
+    // Call populateMakes to initialize the make dropdown
+    populateMakes();
+  </script>
 </body>
 </html>
