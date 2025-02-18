@@ -313,6 +313,50 @@ function revealAnswer() {
     document.getElementById("feedback").innerHTML = `<span style="color: blue; transition: 0.5s;">The correct answer is a ${correctMake} ${correctModel}.</span>`;
     document.getElementById("revealButton").style.display = "none";
 }
+// Function to reveal the answer and show the end-game screen
+function revealAnswer() {
+    document.getElementById("revealed-car").textContent = `${correctMake} ${correctModel}`;
+    document.getElementById("end-game-screen").classList.remove("hidden");
+
+    // Store the game-over state in localStorage
+    localStorage.setItem("gameOver", "true");
+    localStorage.setItem("revealedCar", `${correctMake} ${correctModel}`);
+}
+
+// Function to check if the game is already over
+function checkGameOver() {
+    if (localStorage.getItem("gameOver") === "true") {
+        document.getElementById("revealed-car").textContent = localStorage.getItem("revealedCar");
+        document.getElementById("end-game-screen").classList.remove("hidden");
+    }
+}
+
+// Function to reset the game when a new car of the day is selected
+function resetGame() {
+    localStorage.removeItem("gameOver");
+    localStorage.removeItem("revealedCar");
+}
+
+// Call this when a new car is selected for the day
+function getRandomCar() {
+    resetGame(); // Reset stored game state when a new car is chosen
+    const randomIndex = Math.floor(Math.random() * carData.length);
+    const selectedCar = carData[randomIndex];
+    correctMake = selectedCar.make;
+    const randomModel = selectedCar.models[Math.floor(Math.random() * selectedCar.models.length)];
+    correctModel = randomModel.name;
+    correctImage = selectedCar.models.find(model => model.name === correctModel).image;
+    
+    document.getElementById("car-image-display").src = correctImage;
+}
+
+// Check game state on page load
+window.onload = function () {
+    updateDate();
+    getRandomCar();
+    checkGameOver(); // Check if the game was already revealed
+};
+
 
 // Initialize the page with preloaded images and a random car for the day
 window.onload = function () {
