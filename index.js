@@ -9,25 +9,33 @@
 // })
 // .catch(error => console.error('Error fetching JSON:', error));
 
-function readCSV(file) {
-  const reader = new FileReader();
-  reader.onload = function(event) {
-    const csv = event.target.result;
-    const lines = csv.split('\n');
-    const data = [];
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (line) {
-        data.push(line.split(','));
-      }
-    }
-    console.log(data);
-  };
-  reader.onerror = function() {
-    console.error('Error reading the file');
-  };
-  reader.readAsText(file);
-}
+// function readCSV(file) {
+//   const reader = new FileReader();
+//   reader.onload = function(event) {
+//     const csv = event.target.result;
+//     const lines = csv.split('\n');
+//     const data = [];
+//     for (let i = 0; i < lines.length; i++) {
+//       const line = lines[i].trim();
+//       if (line) {
+//         data.push(line.split(','));
+//       }
+//     }
+//     console.log(data);
+//   };
+//   reader.onerror = function() {
+//     console.error('Error reading the file');
+//   };
+//   reader.readAsText(file);
+// }
+
+const carData = {
+  toyota: ['Corolla', 'Camry', 'Prius', 'Highlander'],
+  ford: ['Focus', 'Mustang', 'Fiesta', 'Explorer'],
+  chevrolet: ['Malibu', 'Camaro', 'Cruze', 'Tahoe'],
+  honda: ['Civic', 'Accord', 'Pilot', 'CR-V'],
+  bmw: ['3 Series', '5 Series', 'X5', 'X3']  // Adding BMW as an example
+};
 
 const inputElement = document.createElement('input');
 inputElement.type = 'file';
