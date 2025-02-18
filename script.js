@@ -213,6 +213,7 @@ const carData = [
         ]
     }
 ];
+
 // Initialize global variables for correct car make and model
 let correctMake;
 let correctModel;
@@ -312,6 +313,11 @@ function revealAnswer() {
     document.getElementById("end-game-modal").classList.remove("hidden");
     document.getElementById("end-game-overlay").classList.remove("hidden");
 
+    // Disable dropdowns and submit button
+    document.getElementById("makeDropdown").disabled = true;
+    document.getElementById("modelDropdown").disabled = true;
+    document.getElementById("checkAnswerButton").disabled = true;
+
     // Store the game-over state in localStorage
     localStorage.setItem("gameOver", "true");
     localStorage.setItem("revealedCar", `${correctMake} ${correctModel}`);
@@ -323,6 +329,11 @@ function checkGameOver() {
         document.getElementById("revealed-car").textContent = localStorage.getItem("revealedCar");
         document.getElementById("end-game-modal").classList.remove("hidden");
         document.getElementById("end-game-overlay").classList.remove("hidden");
+
+        // Disable dropdowns and submit button
+        document.getElementById("makeDropdown").disabled = true;
+        document.getElementById("modelDropdown").disabled = true;
+        document.getElementById("checkAnswerButton").disabled = true;
     }
 }
 
