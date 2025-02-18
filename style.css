@@ -118,7 +118,24 @@ button:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.5); /* Blue focus ring */
 }
+#reveal-button {
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+}
 
+#reveal-button:hover {
+    background-color: black;
+    color: white;
+}
+ 
 /* Footer */
 footer {
   background-color: #ffffff;
