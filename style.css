@@ -4,30 +4,39 @@
   padding: 0;
   box-sizing: border-box;
 }
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+text-align: center;
+height: 100vh;
 
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #f1f3f4; /* Light gray background like Chrome */
   color: #202124; /* Dark text for readability */
   line-height: 1.6;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-h1, h2, h3 {
-  font-weight: 500;
-  text-align: center; /* Center the header */
+  height: 100vh;
+  display: flex;
+  justify-content: center; /* Center contents horizontally */
+  align-items: center; /* Center contents vertically */
+  flex-direction: column;
+  text-align: center;
 }
 
 /* Container */
 .container {
   width: 80%;
-  margin: 0 auto;
   max-width: 1200px;
   padding: 20px;
+}
+
+/* Header */
+header h1 {
+  font-size: 60px; /* Increased size */
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 30px; /* Space below the header */
 }
 
 /* Navbar (mimicking Chrome's tab bar style) */
@@ -52,7 +61,7 @@ h1, h2, h3 {
 
 .navbar .menu a {
   color: #202124;
-  font-size: 14px;
+  font-size: 18px; /* Larger font size */
   font-weight: 400;
   padding: 5px 10px;
   border-radius: 4px;
@@ -63,22 +72,32 @@ h1, h2, h3 {
   background-color: #e8f0fe;
 }
 
-/* Header */
-header {
-  text-align: center;
-  margin: 50px 0; /* Adds spacing around the header */
+/* Dropdown Container */
+.dropdown-container {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-bottom: 40px;
 }
 
-header h1 {
-  font-size: 32px;
-  font-weight: 600;
-  color: #333;
+select {
+  padding: 15px;
+  font-size: 18px; /* Larger font size */
+  width: 250px; /* Increased width */
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #ffffff;
+  transition: border-color 0.3s ease;
 }
 
-/* Button Styles (mimicking Chrome buttons) */
+select:focus {
+  border-color: #1a73e8;
+}
+
+/* Button Styles */
 button {
-  padding: 8px 15px;
-  font-size: 14px;
+  padding: 12px 25px;
+  font-size: 18px; /* Larger font size */
   color: #ffffff;
   background-color: #1a73e8; /* Chrome's blue button color */
   border: none;
@@ -100,50 +119,6 @@ button:focus {
   box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.5); /* Blue focus ring */
 }
 
-/* Input fields */
-input[type="text"], input[type="email"], input[type="password"], select {
-  padding: 10px;
-  font-size: 14px;
-  width: 100%;
-  border: 1px solid #e0e0e0; /* Light gray border */
-  border-radius: 4px;
-  background-color: #ffffff;
-  transition: border-color 0.3s ease;
-}
-
-input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
-  border-color: #1a73e8; /* Focused input border color */
-}
-
-input[type="text"], input[type="email"], input[type="password"] {
-  margin-bottom: 15px;
-}
-
-/* Dropdown (Select) */
-select {
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  background-color: #ffffff;
-  transition: border-color 0.3s ease;
-}
-
-select:focus {
-  border-color: #1a73e8;
-}
-
-/* Align dropdown menus side by side */
-.dropdown-container {
-  display: flex;
-  gap: 20px;
-  justify-content: center; /* Center the dropdowns */
-}
-
-select {
-  width: 200px; /* Fixed width for dropdowns */
-}
-
 /* Footer */
 footer {
   background-color: #ffffff;
@@ -153,40 +128,24 @@ footer {
 }
 
 footer p {
-  font-size: 14px;
+  font-size: 18px; /* Larger font size */
   color: #5f6368;
 }
 
-/* Cards/Boxes (mimicking Chrome's content card design) */
+/* Cards/Boxes */
 .card {
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  font-size: 18px; /* Larger font size */
 }
 
-/* Links */
 a {
   color: #1a73e8;
 }
 
 a:hover {
   text-decoration: underline;
-}
-
-/* Additional Styling for Forms */
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-form label {
-  margin-bottom: 5px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-form input, form select {
-  margin-bottom: 15px;
 }
