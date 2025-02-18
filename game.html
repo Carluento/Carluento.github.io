@@ -66,3 +66,63 @@
         </select>
     </div>
 </div>
+
+<script>
+    // Function to update the current date
+    function updateDate() {
+        const currentDate = new Date();
+        const dateStr = currentDate.toDateString();
+        document.getElementById('current-date').innerText = dateStr;
+    }
+
+    // JavaScript arrays for car makes and models
+    const carMakes = ['Ford', 'Chevrolet', 'Toyota'];
+    const carModels = {
+        'Ford': ['F-150', 'Mustang', 'Escape'],
+        'Chevrolet': ['Silverado', 'Camaro', 'Tahoe'],
+        'Toyota': ['Corolla', 'Camry', 'RAV4']
+    };
+
+    // Populate the make dropdown
+    function populateMakes() {
+        const makeSelect = document.getElementById('make');
+        carMakes.forEach(make => {
+            const option = document.createElement('option');
+            option.value = make;
+            option.textContent = make;
+            makeSelect.appendChild(option);
+        });
+    }
+
+    // Update models based on selected make
+    function updateModels() {
+        const makeSelect = document.getElementById('make');
+        const modelSelect = document.getElementById('model');
+        const selectedMake = makeSelect.value;
+
+        // Clear the previous models
+        modelSelect.innerHTML = '<option value="">Select Model</option>';
+
+        // Populate the models based on selected make
+        if (selectedMake) {
+            carModels[selectedMake].forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                modelSelect.appendChild(option);
+            });
+        }
+    }
+
+    // Initialize the page
+    function initializePage() {
+        updateDate();
+        populateMakes();
+    }
+
+    // Run the initialization when the page loads
+    window.onload = initializePage;
+</script>
+
+</body>
+</html>
