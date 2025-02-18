@@ -53,21 +53,73 @@
     <p class="question">What is the make and model of today's car?</p>
 
     <div class="dropdown">
-        <label for="make">Choose the make of the car:</label>
-        <select id="make" onchange="updateModels()">
-            <option value="">Select Make</option>
+        <label for="makeDropdown">Choose the make of the car:</label>
+        <select id="makeDropdown">
+            <option value="">--Select Make--</option>
         </select>
     </div>
 
     <div class="dropdown">
-        <label for="model">Choose the model of the car:</label>
-        <select id="model">
-            <option value="">Select Model</option>
+        <label for="modelDropdown">Choose the model of the car:</label>
+        <select id="modelDropdown">
+            <option value="">--Select Model--</option>
         </select>
     </div>
 </div>
 
 <script>
+    // JavaScript array of car makes and models
+    const carData = [
+        { make: "Ferrari", models: ["LaFerrari", "488 GTB", "F8 Tributo", "California T", "812 Superfast"] },
+        { make: "Lamborghini", models: ["Aventador", "Huracán", "Centenario", "Urus", "Egoista"] },
+        { make: "Bugatti", models: ["Veyron", "Chiron", "Divo", "La Voiture Noire", "EB110"] },
+        { make: "McLaren", models: ["P1", "720S", "570S", "Speedtail", "Sabre"] },
+        { make: "Porsche", models: ["911 Turbo S", "918 Spyder", "Cayman GT4", "Panamera Turbo", "Taycan"] },
+        { make: "Koenigsegg", models: ["Agera RS", "Jesko", "Regera", "One:1", "Gemera"] },
+        { make: "Pagani", models: ["Huayra", "Zonda", "Huayra Roadster", "Zonda R", "Huayra BC"] },
+        { make: "Aston Martin", models: ["Valkyrie", "DB11", "Vantage AMR", "One-77", "DBS Superleggera"] },
+        { make: "Tesla", models: ["Roadster", "Model S Plaid", "Model X", "Cybertruck", "Model 3"] },
+        { make: "Alfa Romeo", models: ["4C", "Giulia Quadrifoglio", "Stelvio Quadrifoglio", "8C Competizione", "GTV6"] },
+        { make: "Lotus", models: ["Exige", "Evora", "Elise", "Lotus 3-Eleven", "Esprit"] },
+        { make: "Chevrolet", models: ["Corvette ZR1", "Camaro ZL1", "Chevelle SS", "El Camino", "Silverado 1500"] },
+        { make: "Toyota", models: ["Supra A90", "Land Cruiser 70", "GT86", "Lexus LFA", "Celica GT-Four"] },
+        { make: "Ford", models: ["GT", "Shelby Mustang GT500", "Focus RS", "F-150 Raptor", "Bronco"] },
+        { make: "Nissan", models: ["GT-R Nismo", "370Z", "Skyline GT-R", "370Z Nismo", "Pathfinder"] },
+        { make: "Maserati", models: ["GranTurismo", "MC12", "Quattroporte", "Ghibli", "Levante"] },
+        { make: "Honda", models: ["NSX", "Civic Type R", "S2000", "CRX", "Prelude"] }
+    ];
+
+    // Populate the "make" dropdown
+    const makeDropdown = document.getElementById("makeDropdown");
+    carData.forEach(car => {
+        const option = document.createElement("option");
+        option.value = car.make;
+        option.textContent = car.make;
+        makeDropdown.appendChild(option);
+    });
+
+    // Function to populate the "model" dropdown based on the selected car make
+    const modelDropdown = document.getElementById("modelDropdown");
+
+    makeDropdown.addEventListener("change", function() {
+        const selectedMake = this.value;
+
+        // Clear the current models in the dropdown
+        modelDropdown.innerHTML = '<option value="">--Select Model--</option>';
+
+        // Find the selected make in carData and populate the models
+        const selectedCar = carData.find(car => car.make === selectedMake);
+
+        if (selectedCar) {
+            selectedCar.models.forEach(model => {
+                const option = document.createElement("option");
+                option.value = model;
+                option.textContent = model;
+                modelDropdown.appendChild(option);
+            });
+        }
+    });
+
     // Function to update the current date
     function updateDate() {
         const currentDate = new Date();
@@ -75,53 +127,10 @@
         document.getElementById('current-date').innerText = dateStr;
     }
 
-    // JavaScript arrays for car makes and models
-    const carMakes = ['Ford', 'Chevrolet', 'Toyota'];
-    const carModels = {
-        'Ford': ['F-150', 'Mustang', 'Escape'],
-        'Chevrolet': ['Silverado', 'Camaro', 'Tahoe'],
-        'Toyota': ['Corolla', 'Camry', 'RAV4']
-    };
-
-    // Populate the make dropdown
-    function populateMakes() {
-        const makeSelect = document.getElementById('make');
-        carMakes.forEach(make => {
-            const option = document.createElement('option');
-            option.value = make;
-            option.textContent = make;
-            makeSelect.appendChild(option);
-        });
-    }
-
-    // Update models based on selected make
-    function updateModels() {
-        const makeSelect = document.getElementById('make');
-        const modelSelect = document.getElementById('model');
-        const selectedMake = makeSelect.value;
-
-        // Clear the previous models
-        modelSelect.innerHTML = '<option value="">Select Model</option>';
-
-        // Populate the models based on selected make
-        if (selectedMake) {
-            carModels[selectedMake].forEach(model => {
-                const option = document.createElement('option');
-                option.value = model;
-                option.textContent = model;
-                modelSelect.appendChild(option);
-            });
-        }
-    }
-
-    // Initialize the page
-    function initializePage() {
+    // Initialize the page with the current date
+    window.onload = function() {
         updateDate();
-        populateMakes();
-    }
-
-    // Run the initialization when the page loads
-    window.onload = initializePage;
+    };
 </script>
 
 </body>
