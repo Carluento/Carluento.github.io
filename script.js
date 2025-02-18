@@ -213,22 +213,44 @@ const carData = [
         ]
     }
 ];
-
 // Initialize global variables for correct car make and model
 let correctMake;
 let correctModel;
 let correctImage;
+let attempts = 0;
 
-// Function to randomly select the car for the day
+// Function to preload images
+function preloadImages(carData) {
+    carData.forEach(car => {
+        car.models.forEach(model => {
+            const img = new Image();
+            img.src = model.image;
+        });
+    });
+}
+
+// Function to randomly select the car for the day (or retrieve from localStorage)
 function getRandomCar() {
-    const randomIndex = Math.floor(Math.random() * carData.length);
-    const selectedCar = carData[randomIndex];
-    correctMake = selectedCar.make;
-    const randomModel = selectedCar.models[Math.floor(Math.random() * selectedCar.models.length)];
-    correctModel = randomModel.name;
-    correctImage = selectedCar.models.find(model => model.name === correctModel).image;
-    
-    // Update the car image on the page
+    const storedCar = JSON.parse(localStorage.getItem("dailyCar"));
+    const storedDate = localStorage.getItem("dailyCarDate");
+    const currentDate = new Date().toDateString();
+
+    if (storedCar && storedDate === currentDate) {
+        correctMake = storedCar.make;
+        correctModel = storedCar.model;
+        correctImage = storedCar.image;
+    } else {
+        const randomCar = carData[Math.floor(Math.random() * carData.length)];
+        const randomModel = randomCar.models[Math.floor(Math.random() * randomCar.models.length)];
+        
+        correctMake = randomCar.make;
+        correctModel = randomModel.name;
+        correctImage = randomModel.image;
+        
+        localStorage.setItem("dailyCar", JSON.stringify({ make: correctMake, model: correctModel, image: correctImage }));
+        localStorage.setItem("dailyCarDate", currentDate);
+    }
+
     document.getElementById("car-image-display").src = correctImage;
 }
 
@@ -243,14 +265,10 @@ carData.forEach(car => {
 
 // Function to populate the "model" dropdown based on the selected make
 const modelDropdown = document.getElementById("modelDropdown");
-
 makeDropdown.addEventListener("change", function () {
     const selectedMake = this.value;
     const selectedCar = carData.find(car => car.make === selectedMake);
-
-    // Clear the current models in the dropdown
     modelDropdown.innerHTML = '<option value="">--Select Model--</option>';
-
     if (selectedCar) {
         selectedCar.models.forEach(model => {
             const option = document.createElement("option");
@@ -262,32 +280,42 @@ makeDropdown.addEventListener("change", function () {
 });
 
 // Function to update the current date
-function updateDate() {
-    const currentDate = new Date();
-    const dateStr = currentDate.toDateString();
-    document.getElementById('current-date').innerText = dateStr;
-}
+document.getElementById('current-date').innerText = new Date().toDateString();
 
 // Check the user's answer and provide feedback
 function checkAnswer() {
     const selectedMake = makeDropdown.value;
     const selectedModel = modelDropdown.value;
     const feedbackElement = document.getElementById("feedback");
-
+    
     if (!selectedMake || !selectedModel) {
         feedbackElement.innerHTML = "Please select both a make and a model!";
         return;
     }
-
+    
+    attempts++;
+    
     if (selectedMake === correctMake && selectedModel === correctModel) {
-        feedbackElement.innerHTML = `<span style="color: green;">Correct! Today's car is a ${correctMake} ${correctModel}.</span>`;
+        feedbackElement.innerHTML = `<span style="color: green; transition: 0.5s;">Correct! Today's car is a ${correctMake} ${correctModel}.</span>`;
+    } else if (selectedMake === correctMake) {
+        feedbackElement.innerHTML = `<span style="color: orange; transition: 0.5s;">You're close! The make is correct, but the model is wrong.</span>`;
     } else {
-        feedbackElement.innerHTML = `<span style="color: red;">Incorrect! Try again.</span>`;
+        feedbackElement.innerHTML = `<span style="color: red; transition: 0.5s;">Incorrect! Try again.</span>`;
+    }
+    
+    if (attempts >= 3) {
+        document.getElementById("revealButton").style.display = "block";
     }
 }
 
-// Initialize the page with the current date and a random car for the day
+// Reveal the correct answer
+function revealAnswer() {
+    document.getElementById("feedback").innerHTML = `<span style="color: blue; transition: 0.5s;">The correct answer is a ${correctMake} ${correctModel}.</span>`;
+    document.getElementById("revealButton").style.display = "none";
+}
+
+// Initialize the page with preloaded images and a random car for the day
 window.onload = function () {
-    updateDate();
-    getRandomCar(); // Randomly select the car for today
+    preloadImages(carData);
+    getRandomCar();
 };
