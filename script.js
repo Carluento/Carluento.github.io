@@ -286,105 +286,36 @@ function checkAnswer() {
     const selectedMake = makeDropdown.value;
     const selectedModel = modelDropdown.value;
     const feedbackElement = document.getElementById("feedback");
-    const guessList = document.getElementById("incorrect-guesses");
 
     if (!selectedMake || !selectedModel) {
         feedbackElement.innerHTML = "Please select both a make and a model!";
         return;
     }
 
-    // Prevent guessing if the game has already ended
-    if (localStorage.getItem("gameOver") === "true") {
-        return;
-    }
-
     attempts++;
 
     if (selectedMake === correctMake && selectedModel === correctModel) {
-        feedbackElement.innerHTML = `<span style="color: green; transition: 0.5s;">Correct! Today's car is a ${correctMake} ${correctModel}.</span>`;
+        feedbackElement.innerHTML = `<span style="color: green;">Correct! Today's car is a ${correctMake} ${correctModel}.</span>`;
     } else {
         let feedbackText;
         if (selectedMake === correctMake) {
-            feedbackText = `<span style="color: orange; transition: 0.5s;">You're close! The make is correct, but the model is wrong.</span>`;
+            feedbackText = `<span style="color: orange;">You're close! The make is correct, but the model is wrong.</span>`;
         } else {
-            feedbackText = `<span style="color: red; transition: 0.5s;">Incorrect! Try again.</span>`;
+            feedbackText = `<span style="color: red;">Incorrect! Try again.</span>`;
         }
         
         feedbackElement.innerHTML = feedbackText;
 
-        // Append incorrect guess to the list
-        const guessItem = document.createElement("p");
-        guessItem.textContent = `${selectedMake} ${selectedModel}`;
-        guessList.appendChild(guessItem);
+        // Display the "Nice try!" message after 5 attempts
+        if (attempts >= 5) {
+            feedbackElement.innerHTML = "Nice try! Come back tomorrow for a new car!";
+        }
     }
 
     // Automatically reveal the answer if 5 incorrect attempts are reached
     if (attempts >= 5) {
-        revealAnswer();
-        return;
+        feedbackElement.innerHTML = `The correct answer is: ${correctMake} ${correctModel}.`;
     }
-}
-
-// Function to reveal the answer and show the end-game modal
-function revealAnswer() {
-    document.getElementById("revealed-car").textContent = `${correctMake} ${correctModel}`;
-    document.getElementById("end-game-modal").classList.remove("hidden");
-    document.getElementById("end-game-overlay").classList.remove("hidden");
-
-    // Disable dropdowns and submit button
-    document.getElementById("makeDropdown").disabled = true;
-    document.getElementById("modelDropdown").disabled = true;
-    document.getElementById("checkAnswerButton").disabled = true;
-
-    // Store the game-over state in localStorage
-    localStorage.setItem("gameOver", "true");
-    localStorage.setItem("revealedCar", `${correctMake} ${correctModel}`);
-}
-
-// Function to check if the game is already over
-function checkGameOver() {
-    if (localStorage.getItem("gameOver") === "true") {
-        revealAnswer();
-    }
-}
-
-// Function to show the "Nice try!" message and hide the modal
-function closeModal() {
-    // Hide the end game modal
-    document.getElementById("end-game-modal").classList.add("hidden");
-    document.getElementById("end-game-overlay").classList.add("hidden");
-
-    // Display the "Nice try!" message above the car image
-    const feedback = document.getElementById("feedback");
-    feedback.innerHTML = "Nice try!";
-
-    // Optionally, reset the dropdowns
-    document.getElementById("makeDropdown").value = "";
-    document.getElementById("modelDropdown").value = "";
-}
-
-// Example of how the game would end (for example)
-function endGame(car) {
-    // Show the modal and overlay
-    document.getElementById("end-game-overlay").classList.remove("hidden");
-    document.getElementById("end-game-modal").classList.remove("hidden");
-
-    // Display the correct car info in the modal
-    document.getElementById("revealed-car").textContent = car;
-
-    // Hide the feedback (in case "Nice try!" was displayed earlier)
-    document.getElementById("feedback").innerHTML = "";
-}
-
-// Simulating the end of the game with a car reveal
-setTimeout(() => {
-    endGame("Ford Mustang"); // You can replace "Ford Mustang" with any car name
-}, 2000);
-
-// Function to close the modal
-function closeModal() {
-    document.getElementById("end-game-modal").classList.add("hidden");
-    document.getElementById("end-game-overlay").classList.add("hidden");
 }
 
 // Function to reset the game when a new car of the day is selected
@@ -392,12 +323,12 @@ function resetGame() {
     localStorage.removeItem("gameOver");
     localStorage.removeItem("revealedCar");
     attempts = 0;
-    document.getElementById("incorrect-guesses").innerHTML = ""; // Clear previous guesses
+    document.getElementById("feedback").innerHTML = ""; // Clear previous feedback
 }
 
 // Initialize the page with preloaded images and check game state
 window.onload = function () {
     preloadImages(carData);
     getRandomCar();
-    checkGameOver();
 };
+
