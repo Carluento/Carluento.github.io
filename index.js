@@ -156,35 +156,34 @@
   }
 ];
 
-    ];
+// Populate the "make" dropdown
+const makeDropdown = document.getElementById("makeDropdown");
 
-    // Populate the make dropdown menu dynamically
-    function populateMakes() {
-      const makeDropdown = document.getElementById('make');
-      carData.forEach(car => {
-        const option = document.createElement('option');
-        option.value = car.make.toLowerCase();
-        option.textContent = car.make;
-        makeDropdown.appendChild(option);
-      });
-    }
+carData.forEach(car => {
+  const option = document.createElement("option");
+  option.value = car.make;
+  option.textContent = car.make;
+  makeDropdown.appendChild(option);
+});
 
-    // Update the model dropdown when a make is selected
-    function updateModels() {
-      const make = document.getElementById('make').value;
-      const modelDropdown = document.getElementById('model');
-      
-      // Clear existing model options
-      modelDropdown.innerHTML = '<option value="">--Select Model--</option>';
-      
-      if (make) {
-        // Find the selected make and populate the models
-        const selectedCar = carData.find(car => car.make.toLowerCase() === make);
-        selectedCar.models.forEach(model => {
-          const option = document.createElement('option');
-          option.value = model.toLowerCase();
-          option.textContent = model;
-          modelDropdown.appendChild(option);
-        });
-      }
-    }
+// Function to populate the "model" dropdown based on the selected car make
+const modelDropdown = document.getElementById("modelDropdown");
+
+makeDropdown.addEventListener("change", function() {
+  const selectedMake = this.value;
+
+  // Clear the current models in the dropdown
+  modelDropdown.innerHTML = '<option value="">--Select Model--</option>';
+
+  // Find the selected make in carData and populate the models
+  const selectedCar = carData.find(car => car.make === selectedMake);
+
+  if (selectedCar) {
+    selectedCar.models.forEach(model => {
+      const option = document.createElement("option");
+      option.value = model;
+      option.textContent = model;
+      modelDropdown.appendChild(option);
+    });
+  }
+});
