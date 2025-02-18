@@ -95,39 +95,36 @@ select:focus {
 }
 
 /* Button Styles */
-button {
-  padding: 12px 25px;
-  font-size: 18px; /* Larger font size */
-  color: #ffffff;
-  background-color: #1a73e8; /* Chrome's blue button color */
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+button, #reveal-button {
+    padding: 12px 25px;
+    font-size: 18px; /* Same font size */
+    color: #ffffff;
+    background-color: #1a73e8; /* Chrome's blue button color */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #1558b0; /* Darker blue when hovering */
+button:hover, #reveal-button:hover {
+    background-color: #1558b0; /* Darker blue when hovering */
 }
 
-button:active {
-  background-color: #0d47a1; /* Even darker blue on click */
+button:active, #reveal-button:active {
+    background-color: #0d47a1; /* Even darker blue on click */
 }
 
-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.5); /* Blue focus ring */
+button:focus, #reveal-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.5);
 }
+
+/* Reveal Button Specific Styles */
 #reveal-button {
     background-color: white;
     color: black;
     border: 2px solid black;
-    padding: 10px 20px;
-    font-size: 16px;
     font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: all 0.3s ease-in-out;
     margin-top: 10px;
 }
 
