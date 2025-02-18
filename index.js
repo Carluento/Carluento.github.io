@@ -1,14 +1,45 @@
-//grabbing JSON contents
+// //grabbing JSON contents
 
-fetch('cars.json')
-.then(response => response.json())
-.then(data => {
-    // data is now a JavaScript object (or array)
-    // Proceed to work with the data
+// fetch('cars.json')
+// .then(response => response.json())
+// .then(data => {
+//     // data is now a JavaScript object (or array)
+//     // Proceed to work with the data
+//     console.log(data);
+// })
+// .catch(error => console.error('Error fetching JSON:', error));
+
+function readCSV(file) {
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const csv = event.target.result;
+    const lines = csv.split('\n');
+    const data = [];
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line) {
+        data.push(line.split(','));
+      }
+    }
     console.log(data);
-})
-.catch(error => console.error('Error fetching JSON:', error));
+  };
+  reader.onerror = function() {
+    console.error('Error reading the file');
+  };
+  reader.readAsText(file);
+}
 
+const inputElement = document.createElement('input');
+inputElement.type = 'file';
+inputElement.accept = '.csv';
+inputElement.addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  if (file) {
+    readCSV(file);
+  }
+});
+
+document.body.appendChild(inputElement);
 
 const quizData = [
     {
