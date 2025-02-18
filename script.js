@@ -281,29 +281,47 @@ makeDropdown.addEventListener("change", function () {
     }
 });
 
-// Function to check the user's answer
+// Function to check the user's answer and display incorrect guesses
 function checkAnswer() {
     const selectedMake = makeDropdown.value;
     const selectedModel = modelDropdown.value;
     const feedbackElement = document.getElementById("feedback");
-    
+    const guessList = document.getElementById("incorrect-guesses");
+
     if (!selectedMake || !selectedModel) {
         feedbackElement.innerHTML = "Please select both a make and a model!";
         return;
     }
-    
+
+    // Prevent guessing if the game has already ended
+    if (localStorage.getItem("gameOver") === "true") {
+        return;
+    }
+
     attempts++;
-    
+
     if (selectedMake === correctMake && selectedModel === correctModel) {
         feedbackElement.innerHTML = `<span style="color: green; transition: 0.5s;">Correct! Today's car is a ${correctMake} ${correctModel}.</span>`;
-    } else if (selectedMake === correctMake) {
-        feedbackElement.innerHTML = `<span style="color: orange; transition: 0.5s;">You're close! The make is correct, but the model is wrong.</span>`;
     } else {
-        feedbackElement.innerHTML = `<span style="color: red; transition: 0.5s;">Incorrect! Try again.</span>`;
+        let feedbackText;
+        if (selectedMake === correctMake) {
+            feedbackText = `<span style="color: orange; transition: 0.5s;">You're close! The make is correct, but the model is wrong.</span>`;
+        } else {
+            feedbackText = `<span style="color: red; transition: 0.5s;">Incorrect! Try again.</span>`;
+        }
+        
+        feedbackElement.innerHTML = feedbackText;
+
+        // Append incorrect guess to the list
+        const guessItem = document.createElement("p");
+        guessItem.textContent = `${selectedMake} ${selectedModel}`;
+        guessList.appendChild(guessItem);
     }
-    
-    if (attempts >= 3) {
-        document.getElementById("revealButton").style.display = "block";
+
+    // Automatically reveal the answer if 5 incorrect attempts are reached
+    if (attempts >= 5) {
+        revealAnswer();
+        return;
     }
 }
 
@@ -326,14 +344,7 @@ function revealAnswer() {
 // Function to check if the game is already over
 function checkGameOver() {
     if (localStorage.getItem("gameOver") === "true") {
-        document.getElementById("revealed-car").textContent = localStorage.getItem("revealedCar");
-        document.getElementById("end-game-modal").classList.remove("hidden");
-        document.getElementById("end-game-overlay").classList.remove("hidden");
-
-        // Disable dropdowns and submit button
-        document.getElementById("makeDropdown").disabled = true;
-        document.getElementById("modelDropdown").disabled = true;
-        document.getElementById("checkAnswerButton").disabled = true;
+        revealAnswer();
     }
 }
 
@@ -347,6 +358,8 @@ function closeModal() {
 function resetGame() {
     localStorage.removeItem("gameOver");
     localStorage.removeItem("revealedCar");
+    attempts = 0;
+    document.getElementById("incorrect-guesses").innerHTML = ""; // Clear previous guesses
 }
 
 // Initialize the page with preloaded images and check game state
