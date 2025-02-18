@@ -142,7 +142,7 @@
         const randomModel = selectedCar.models[Math.floor(Math.random() * selectedCar.models.length)];
         correctModel = randomModel.name;
         correctImage = selectedCar.image;
-
+        console.log(selectedCar);
         // Update the image displayed on the page (main image of the car)
         document.getElementById("car-image-display").src = correctImage;
     }
