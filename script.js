@@ -1,10 +1,10 @@
-// Initialize global variables for correct car make and model
+// Initialize global variables for the correct car make, model, and image
 let correctMake;
 let correctModel;
 let correctImage;
 let attempts = 0;
 
-// Function to preload images
+// Function to preload images (you can keep this if needed)
 function preloadImages(carData) {
     carData.forEach(car => {
         car.models.forEach(model => {
@@ -54,12 +54,32 @@ async function fetchModels(makeId) {
     }
 }
 
+// Function to fetch a random car of the day (called once on page load)
+async function fetchCarOfTheDay() {
+    try {
+        // Fetch a random car from the API
+        const response = await fetch('https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getRandomCar');
+        const data = await response.json();
+
+        // Display the car of the day image
+        const car = data.Car;
+        correctMake = car.make;
+        correctModel = car.model;
+        correctImage = car.image;  // Assuming the API returns an image URL
+
+        // Set the car image for the "Car of the Day"
+        document.getElementById("car-image-display").src = correctImage;
+    } catch (error) {
+        console.error("Error fetching car of the day:", error);
+    }
+}
+
 // Event listener for the "make" dropdown change
 const makeDropdown = document.getElementById("makeDropdown");
 makeDropdown.addEventListener("change", function() {
     const selectedMakeId = this.value;
     if (selectedMakeId) {
-        fetchModels(selectedMakeId);
+        fetchModels(selectedMakeId);  // Fetch models when make is selected
     } else {
         document.getElementById("modelDropdown").innerHTML = '<option value="">--Select Model--</option>'; // Clear models
     }
@@ -68,7 +88,7 @@ makeDropdown.addEventListener("change", function() {
 // Function to check the user's answer and display incorrect guesses
 function checkAnswer() {
     const selectedMake = makeDropdown.value;
-    const selectedModel = document.getElementById("modelDropdown").value;
+    const selectedModel = modelDropdown.value;
     const feedbackElement = document.getElementById("feedback");
 
     if (!selectedMake || !selectedModel) {
@@ -104,14 +124,13 @@ function checkAnswer() {
 
 // Function to reset the game when a new car of the day is selected
 function resetGame() {
-    localStorage.removeItem("gameOver");
-    localStorage.removeItem("revealedCar");
     attempts = 0;
     document.getElementById("feedback").innerHTML = ""; // Clear previous feedback
+    document.getElementById("car-image-display").src = ""; // Clear the car image
 }
 
-// Initialize the page with makes and models
+// Initialize the page with makes, models, and car of the day
 window.onload = function() {
     fetchMakes(); // Fetch car makes on page load
-    getRandomCar(); // Fetch random car for the day (as before)
+    fetchCarOfTheDay(); // Fetch and display the car of the day
 };
