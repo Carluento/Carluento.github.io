@@ -348,6 +348,39 @@ function checkGameOver() {
     }
 }
 
+// Function to show the "Nice try!" message and hide the modal
+function closeModal() {
+    // Hide the end game modal
+    document.getElementById("end-game-modal").classList.add("hidden");
+    document.getElementById("end-game-overlay").classList.add("hidden");
+
+    // Display the "Nice try!" message above the car image
+    const feedback = document.getElementById("feedback");
+    feedback.innerHTML = "Nice try!";
+
+    // Optionally, reset the dropdowns
+    document.getElementById("makeDropdown").value = "";
+    document.getElementById("modelDropdown").value = "";
+}
+
+// Example of how the game would end (for example)
+function endGame(car) {
+    // Show the modal and overlay
+    document.getElementById("end-game-overlay").classList.remove("hidden");
+    document.getElementById("end-game-modal").classList.remove("hidden");
+
+    // Display the correct car info in the modal
+    document.getElementById("revealed-car").textContent = car;
+
+    // Hide the feedback (in case "Nice try!" was displayed earlier)
+    document.getElementById("feedback").innerHTML = "";
+}
+
+// Simulating the end of the game with a car reveal
+setTimeout(() => {
+    endGame("Ford Mustang"); // You can replace "Ford Mustang" with any car name
+}, 2000);
+
 // Function to close the modal
 function closeModal() {
     document.getElementById("end-game-modal").classList.add("hidden");
