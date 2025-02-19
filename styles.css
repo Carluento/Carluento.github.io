@@ -1,81 +1,142 @@
-/* Make the header flexible */
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  color: #202124;
+  line-height: 1.6;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+/* Header */
 header {
-    background-color: #092152;
-    padding: 15px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+  background-color: #4CAF50;
+  color: white;
+  padding: 20px;
+  font-size: 48px;
+  width: 100%;
 }
 
-.logo {
-    width: 100px; /* Scales well on mobile */
-    height: auto;
-    margin-left: 15px;
-}
-
-/* Adjust container for different screen sizes */
+/* Container */
 .container {
-    width: 90%;
-    max-width: 1200px;
-    padding: 15px;
+  width: 80%;
+  max-width: 1200px;
+  padding: 20px;
 }
 
-/* Make the content section more readable */
 .content {
-    padding: 15px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-    max-width: 95%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  max-width: 500px;
 }
 
-/* Stack dropdowns on small screens */
+.question {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+/* Dropdown */
 .dropdown-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-bottom: 40px;
 }
 
-/* Ensure buttons are touch-friendly */
+select {
+  padding: 15px;
+  font-size: 18px;
+  width: 250px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #ffffff;
+  transition: border-color 0.3s ease;
+}
+
+select:focus {
+  border-color: #1a73e8;
+}
+
+/* Buttons */
 button, .submit-btn, #reveal-button {
-    width: 100%;
-    max-width: 250px;
-    padding: 14px;
-    font-size: 16px;
+  padding: 12px 25px;
+  font-size: 18px;
+  color: white;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Make the footer responsive */
+button:hover, .submit-btn:hover, #reveal-button:hover {
+  background-color: #45a049;
+}
+
+button:active, .submit-btn:active, #reveal-button:active {
+  background-color: #388E3C;
+}
+
+button:focus, .submit-btn:focus, #reveal-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+}
+
+/* Reveal Button Specific */
+#reveal-button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#reveal-button:hover {
+  background-color: black;
+  color: white;
+}
+
+/* Footer */
 footer {
-    padding: 10px;
-    font-size: 14px;
+  background-color: #ffffff;
+  padding: 15px 0;
+  text-align: center;
+  border-top: 1px solid #e0e0e0;
 }
 
-/* Media Query: Adjust for smaller screens */
-@media (max-width: 768px) {
-    header {
-        justify-content: center; /* Center header items on smaller screens */
-        padding: 10px;
-    }
-
-    .logo {
-        width: 80px; /* Slightly smaller logo for mobile */
-    }
-
-    .content {
-        max-width: 100%;
-        padding: 10px;
-    }
-
-    .dropdown-container {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    button, .submit-btn, #reveal-button {
-        font-size: 14px;
-        padding: 12px;
-    }
+footer p {
+  font-size: 18px;
+  color: #5f6368;
 }
+
+/* Cards */
+.card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 30px;
+  font-size: 18px;
+}
+
+a {
+  color: #1a73e8;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
