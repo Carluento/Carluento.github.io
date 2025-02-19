@@ -1,60 +1,34 @@
-document.addEventListener("DOMContentLoaded", function () {
-    fetchCarMakes();
-    setCarOfTheDay();
-});
-
-// Function to fetch car makes from the NHTSA API
-function fetchCarMakes() {
-    fetch("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json")
-        .then(response => response.json())
-        .then(data => {
-            const makeDropdown = document.getElementById("makeDropdown");
-            data.Results.forEach(make => {
-                let option = document.createElement("option");
-                option.value = make.Make_Name;
-                option.textContent = make.Make_Name;
-                makeDropdown.appendChild(option);
-            });
-        })
-        .catch(error => console.error("Error fetching makes:", error));
-}
-
-// Event listener for make selection
-document.getElementById("makeDropdown").addEventListener("change", function () {
-    const selectedMake = this.value;
-    fetchCarModels(selectedMake);
-});
-
-// Function to fetch models based on selected make
-function fetchCarModels(make) {
-    fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/${make}?format=json`)
-        .then(response => response.json())
-        .then(data => {
-            const modelDropdown = document.getElementById("modelDropdown");
-            modelDropdown.innerHTML = '<option value="">--Select Model--</option>'; // Reset dropdown
-            data.Results.forEach(model => {
-                let option = document.createElement("option");
-                option.value = model.Model_Name;
-                option.textContent = model.Model_Name;
-                modelDropdown.appendChild(option);
-            });
-        })
-        .catch(error => console.error("Error fetching models:", error));
-}
-
-// Function to randomly select a car of the day and display it
 function setCarOfTheDay() {
-    fetch("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json")
+    fetch("https://placeholder-api.com/getallmakes") // Placeholder for NHTSA API
         .then(response => response.json())
         .then(data => {
-            const randomMake = data.Results[Math.floor(Math.random() * data.Results.length)];
-            return fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/${randomMake.Make_Name}?format=json`);
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+
+            // Use the dayOfYear as an index to pick a make consistently
+            const makeIndex = dayOfYear % data.Results.length;
+            const selectedMake = data.Results[makeIndex];
+
+            return fetch(`https://placeholder-api.com/getmodels/${selectedMake.Make_Name}`); // Placeholder for models API
         })
         .then(response => response.json())
         .then(data => {
-            const randomModel = data.Results[Math.floor(Math.random() * data.Results.length)];
-            document.getElementById("car-image-display").src = `https://source.unsplash.com/400x300/?${randomModel.Model_Name},car`;
-            document.getElementById("car-image-display").alt = `${randomModel.Model_Name}`;
+            if (data.Results.length === 0) throw new Error("No models found for selected make");
+
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+            
+            // Use dayOfYear to consistently pick a model
+            const modelIndex = dayOfYear % data.Results.length;
+            const selectedModel = data.Results[modelIndex];
+
+            // Display the car of the day
+            document.getElementById("car-image-display").src = `https://source.unsplash.com/400x300/?${selectedModel.Model_Name},car`;
+            document.getElementById("car-image-display").alt = `${selectedModel.Model_Name}`;
+
+            // Store the correct answer
+            correctMake = selectedModel.Make_Name;
+            correctModel = selectedModel.Model_Name;
         })
         .catch(error => console.error("Error fetching car of the day:", error));
 }
