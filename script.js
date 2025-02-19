@@ -1,19 +1,3 @@
-// Initialize global variables for the correct car make, model, and image
-let correctMake;
-let correctModel;
-let correctImage;
-let attempts = 0;
-
-// Function to preload images (you can keep this if needed)
-function preloadImages(carData) {
-    carData.forEach(car => {
-        car.models.forEach(model => {
-            const img = new Image();
-            img.src = model.image;
-        });
-    });
-}
-
 // Fetch car makes from the API
 async function fetchMakes() {
     try {
