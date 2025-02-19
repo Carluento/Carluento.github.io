@@ -17,7 +17,7 @@ function preloadImages(carData) {
 // Fetch car makes from the API
 async function fetchMakes() {
     try {
-        const response = await fetch('https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getMakes');
+        const response = await fetch('https://vpic.nhtsa.dot.gov/api/vehicles/getallmanufacturers?format=json&page=2');
         const data = await response.json();
         
         // Populate the "make" dropdown
@@ -36,7 +36,7 @@ async function fetchMakes() {
 // Fetch models based on the selected make
 async function fetchModels(makeId) {
     try {
-        const response = await fetch(`https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getModels&make=${makeId}`);
+        const response = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeId/440?format=json${makeId}`);
         const data = await response.json();
         
         // Populate the "model" dropdown
