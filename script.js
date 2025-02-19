@@ -1,61 +1,62 @@
-// Fetch car makes from the API
-async function fetchMakes() {
-    try {
-        const response = await fetch('https://vpic.nhtsa.dot.gov/api/vehicles/getallmanufacturers?format=json&page=2');
-        const data = await response.json();
-        
-        // Populate the "make" dropdown
-        const makeDropdown = document.getElementById("makeDropdown");
-        data.Makes.forEach(make => {
-            const option = document.createElement("option");
-            option.value = make.make_id;
-            option.textContent = make.make_display;
-            makeDropdown.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Error fetching makes:", error);
-    }
+document.addEventListener("DOMContentLoaded", function () {
+    fetchCarMakes();
+    setCarOfTheDay();
+});
+
+// Function to fetch car makes from the NHTSA API
+function fetchCarMakes() {
+    fetch("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json")
+        .then(response => response.json())
+        .then(data => {
+            const makeDropdown = document.getElementById("makeDropdown");
+            data.Results.forEach(make => {
+                let option = document.createElement("option");
+                option.value = make.Make_Name;
+                option.textContent = make.Make_Name;
+                makeDropdown.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Error fetching makes:", error));
 }
 
-// Fetch models based on the selected make
-async function fetchModels(makeId) {
-    try {
-        const response = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeId/440?format=json${makeId}`);
-        const data = await response.json();
-        
-        // Populate the "model" dropdown
-        const modelDropdown = document.getElementById("modelDropdown");
-        modelDropdown.innerHTML = '<option value="">--Select Model--</option>'; // Clear existing models
-        
-        data.Models.forEach(model => {
-            const option = document.createElement("option");
-            option.value = model.model_id;
-            option.textContent = model.model_name;
-            modelDropdown.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Error fetching models:", error);
-    }
+// Event listener for make selection
+document.getElementById("makeDropdown").addEventListener("change", function () {
+    const selectedMake = this.value;
+    fetchCarModels(selectedMake);
+});
+
+// Function to fetch models based on selected make
+function fetchCarModels(make) {
+    fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/${make}?format=json`)
+        .then(response => response.json())
+        .then(data => {
+            const modelDropdown = document.getElementById("modelDropdown");
+            modelDropdown.innerHTML = '<option value="">--Select Model--</option>'; // Reset dropdown
+            data.Results.forEach(model => {
+                let option = document.createElement("option");
+                option.value = model.Model_Name;
+                option.textContent = model.Model_Name;
+                modelDropdown.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Error fetching models:", error));
 }
 
-// Function to fetch a random car of the day (called once on page load)
-async function fetchCarOfTheDay() {
-    try {
-        // Fetch a random car from the API
-        const response = await fetch('https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getRandomCar');
-        const data = await response.json();
-
-        // Display the car of the day image
-        const car = data.Car;
-        correctMake = car.make;
-        correctModel = car.model;
-        correctImage = car.image;  // Assuming the API returns an image URL
-
-        // Set the car image for the "Car of the Day"
-        document.getElementById("car-image-display").src = correctImage;
-    } catch (error) {
-        console.error("Error fetching car of the day:", error);
-    }
+// Function to randomly select a car of the day and display it
+function setCarOfTheDay() {
+    fetch("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json")
+        .then(response => response.json())
+        .then(data => {
+            const randomMake = data.Results[Math.floor(Math.random() * data.Results.length)];
+            return fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/${randomMake.Make_Name}?format=json`);
+        })
+        .then(response => response.json())
+        .then(data => {
+            const randomModel = data.Results[Math.floor(Math.random() * data.Results.length)];
+            document.getElementById("car-image-display").src = `https://source.unsplash.com/400x300/?${randomModel.Model_Name},car`;
+            document.getElementById("car-image-display").alt = `${randomModel.Model_Name}`;
+        })
+        .catch(error => console.error("Error fetching car of the day:", error));
 }
 
 // Event listener for the "make" dropdown change
